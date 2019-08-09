@@ -6,7 +6,16 @@ import Layout from "../components/layout"
 import SEO from "../components/seo"
 import { rhythm, scale } from "../utils/typography"
 
-class BlogPostTemplate extends React.Component {
+interface Props {
+  readonly location: { pathname: string }
+  readonly data: PageQueryData
+  readonly pageContext: {
+    previous?: Markdown
+    next?: Markdown
+  }
+}
+
+class BlogPostTemplate extends React.Component<Props> {
   render() {
     const post = this.props.data.markdownRemark
     const siteTitle = this.props.data.site.siteMetadata.title
@@ -73,6 +82,25 @@ class BlogPostTemplate extends React.Component {
 }
 
 export default BlogPostTemplate
+
+interface PageQueryData {
+  site: {
+    siteMetadata: {
+      title: string
+      author: string
+    }
+  }
+  markdownRemark: {
+    id?: string
+    excerpt?: string
+    html: string
+    frontmatter: {
+      title: string
+      date: string
+      description: string
+    }
+  }
+}
 
 export const pageQuery = graphql`
   query BlogPostBySlug($slug: String!) {

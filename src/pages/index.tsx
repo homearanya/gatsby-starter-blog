@@ -6,7 +6,12 @@ import Layout from "../components/layout"
 import SEO from "../components/seo"
 import { rhythm } from "../utils/typography"
 
-class BlogIndex extends React.Component {
+interface Props {
+  readonly location: { pathname: string }
+  readonly data: PageQueryData
+}
+
+class BlogIndex extends React.Component<Props> {
   render() {
     const { data } = this.props
     const siteTitle = data.site.siteMetadata.title
@@ -44,6 +49,29 @@ class BlogIndex extends React.Component {
 }
 
 export default BlogIndex
+
+interface PageQueryData {
+  readonly site: {
+    siteMetadata: {
+      title: string
+    }
+  }
+  readonly allMarkdownRemark: {
+    edges: {
+      node: {
+        excerpt: string
+        fields: {
+          slug: string
+        }
+        frontmatter: {
+          date: string
+          title: string
+          description: string
+        }
+      }
+    }[]
+  }
+}
 
 export const pageQuery = graphql`
   query {
